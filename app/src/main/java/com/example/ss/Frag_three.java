@@ -1,6 +1,7 @@
 package com.example.ss;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class Frag_three extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_frag_three, container, false);
         tv1=v.findViewById(R.id.textView17);
+        tv1.setMovementMethod(new ScrollingMovementMethod());
         bt1=v.findViewById(R.id.button14);
         bt2=v.findViewById(R.id.button15);
         bt3=v.findViewById(R.id.button16);
@@ -37,7 +39,15 @@ public class Frag_three extends Fragment {
                 String s2=et2.getText().toString();
                 if(s1.equals(mgr_pass)) {
                     String result = db.fetchData(s2);
-                    tv1.setText(result);
+                    String gg="";
+                    for(int j=0;j<result.length();j++)
+                    {
+                        if(result.charAt(j)==' '||result.charAt(j)==';')
+                            gg=gg+"\n";
+                        else
+                            gg=gg+result.charAt(j);
+                    }
+                    tv1.setText("USER DETAILS ARE "+gg);
                 }
                 else
                 {
@@ -58,7 +68,15 @@ public class Frag_three extends Fragment {
                 String s2=et2.getText().toString();
                 if(s1.equals(mgr_pass)) {
                     String result = db.fetchData(s2);
-                    tv1.setText(result);
+                    String gg="";
+                    for(int j=0;j<result.length();j++)
+                    {
+                        if(result.charAt(j)==' '||result.charAt(j)==';')
+                            gg=gg+"\n";
+                        else
+                            gg=gg+result.charAt(j);
+                    }
+                    tv1.setText("USER FLAG IS -"+gg);
                 }
                 else
                 {

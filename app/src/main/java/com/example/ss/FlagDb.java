@@ -14,8 +14,8 @@ import java.util.Calendar;
 public class FlagDb {
     public static final String KEY_ROWID="_id";
     public static final String KEY_FLAG="person_mail";
-    private final String DATABASE_NAME="FlagerDB";
-    private final String DATABASE_TABLE="FlagerTable";
+    private final String DATABASE_NAME="FlagerrrrDB";
+    private final String DATABASE_TABLE="FlagerrrrTable";
     private final int DATABASE_VERSION=1;
     private FlagDb.DBHelper ourHelper;
     private final Context ourcontext;

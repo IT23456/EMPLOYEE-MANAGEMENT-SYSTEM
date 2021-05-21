@@ -50,9 +50,9 @@ class JavaMailAPI extends AsyncTask<Void, Void, Void> {
         MimeMessage mimeMessage = new MimeMessage(session);
         try {
             mimeMessage.setFrom(new InternetAddress(Utils.EMAIL));
-            // InternetAddress[][] cc = new InternetAddress[][]{InternetAddress.parse("subhamkumar397997@gmail.com"),
+
             //     InternetAddress.parse("iit2019093@iiita.ac.in"),
-            // InternetAddress.parse("sunil385293@gmail.com")};
+
             //mimeMessage.addRecipients( CC, String.valueOf(cc));
             mimeMessage.addRecipients(Message.RecipientType.CC, InternetAddress.parse(email));
             // mimeMessage.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(email)));

@@ -48,9 +48,6 @@ public class CompanyDb {
             db.execSQL(sqlCode);
         }
     }
-
-
-
     public CompanyDb open() throws SQLException {
         ourHelper = new CompanyDb.DBHelper2(ourcontext);
         ourDatabase = ourHelper.getWritableDatabase();
@@ -155,7 +152,7 @@ public class CompanyDb {
         }
         if(cntr==0)
         {
-            result="notfound";
+            result="";
         }
         c.close();
         return result;

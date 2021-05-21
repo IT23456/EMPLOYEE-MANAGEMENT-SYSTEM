@@ -47,6 +47,7 @@ public class ContactsDb {
                     KEY_OUT + " TEXT NOT NULL);";
             db.execSQL(sqlCode);
         }
+
     }
 
 
@@ -91,7 +92,7 @@ public class ContactsDb {
             int hh=calendar.get(Calendar.MINUTE);
             int m=g*3600+hh*60;
             String str=c.getString(iTime);
-            Log.d("itime is ","sss "+str);
+            Log.d("itime is ","sss "+str+ " "+m);
             int mm=Integer.parseInt(str);
             if(m>mm) {
                 result = result + c.getString(iCell) + "\n";

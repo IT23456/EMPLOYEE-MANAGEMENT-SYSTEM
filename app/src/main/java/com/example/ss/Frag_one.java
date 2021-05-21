@@ -90,8 +90,21 @@ public class Frag_one extends Fragment {
                 String s9=et10.getText().toString();
                 String s10=et11.getText().toString();
                 String s11=et13.getText().toString();
+                et0.setText("");
+                et1.setText("");
+                et2.setText("");
+                et3.setText("");
+                et4.setText("");
+                et5.setText("");
+                et6.setText("");
+                et7.setText("");
+                et8.setText("");
+                et10.setText("");
+                et11.setText("");
+                et13.setText("");
+
                 String times="sun-"+s5+"mon-"+s6+"tue-"+s7+"wed-"+s8+"thu-"+s9+"fri-"+s10+"sat-"+s11;
-                Toast.makeText(MainActivity.getInstance(),"pass "+s0+" "+mgrpass,Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.getInstance(),"pass "+s0+" "+mgrpass,Toast.LENGTH_LONG).show();
                 if(s0.equals("we"))
                 {
                     CompanyDb db=new CompanyDb(MainActivity.getInstance());
@@ -125,28 +138,29 @@ public class Frag_one extends Fragment {
                     else
                     {
                         db.close();
-                        Log.d("we are destroying ","thread "+Thread.currentThread()+" ");
-                        try{
-                            CompanyDb dbb=new CompanyDb(MainActivity.getInstance());
-                            dbb.open();
-                            dbb.deleteEntry(s1);
-                            dbb.close();
-                            Toast.makeText(MainActivity.getInstance(),"Sucessfully deleted||",Toast.LENGTH_SHORT).show();
-                        }
-                        catch (android.database.SQLException e)
-                        {
-                            Toast.makeText(MainActivity.getInstance(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                        try {
-                            Log.d("we are creating ","thread "+Thread.currentThread());
-                            CompanyDb ddb = new CompanyDb(MainActivity.getInstance());
-                            ddb.open();
-                            ddb.createEntry(s1, s2, s3,s4,times);
-                            ddb.close();
-                            Toast.makeText(MainActivity.getInstance(), "Successfully saved", Toast.LENGTH_SHORT).show();
-                        } catch (SQLException e) {
-                            Toast.makeText(MainActivity.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+//                        Log.d("we are destroying ","thread "+Thread.currentThread()+" ");
+//                        try{
+//                            CompanyDb dbb=new CompanyDb(MainActivity.getInstance());
+//                            dbb.open();
+//                            dbb.deleteEntry(s1);
+//                            dbb.close();
+//                            Toast.makeText(MainActivity.getInstance(),"Sucessfully deleted||",Toast.LENGTH_SHORT).show();
+//                        }
+//                        catch (android.database.SQLException e)
+//                        {
+//                            Toast.makeText(MainActivity.getInstance(),e.getMessage(),Toast.LENGTH_SHORT).show();
+//                        }
+//                        try {
+//                            Log.d("we are creating ","thread "+Thread.currentThread());
+//                            CompanyDb ddb = new CompanyDb(MainActivity.getInstance());
+//                            ddb.open();
+//                            ddb.createEntry(s1, s2, s3,s4,times);
+//                            ddb.close();
+//                            Toast.makeText(MainActivity.getInstance(), "Successfully saved", Toast.LENGTH_SHORT).show();
+//                        } catch (SQLException e) {
+//                            Toast.makeText(MainActivity.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+                        Toast.makeText(MainActivity.getInstance(),"already a member of company ",Toast.LENGTH_SHORT).show();
                     }
                     db.close();
                 }
@@ -176,7 +190,9 @@ public class Frag_one extends Fragment {
                 String s10=et11.getText().toString();
                 String s11=et13.getText().toString();*/
                 //String times="sun-"+s5+"mon-"+s6+"tue-"+s7+"wed-"+s8+"thu-"+s9+"fri-"+s10+"sat-"+s11;
-                Toast.makeText(MainActivity.getInstance(),"pass "+s0+" "+mgrpass,Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.getInstance(),"pass "+s0+" "+mgrpass,Toast.LENGTH_LONG).show();
+                et0.setText("");
+                et1.setText("");
                 if(s0.equals("we"))
                 {
                     try{
@@ -184,6 +200,18 @@ public class Frag_one extends Fragment {
                         dbb.open();
                         dbb.deleteEntry(s1);
                         dbb.close();
+                        Registered dbbbb=new Registered(MainActivity.getInstance());
+                        dbbbb.open();
+                        dbbbb.deleteEntry(s1);
+                        dbbbb.close();
+                        FlagDb ffd=new FlagDb(MainActivity.getInstance());
+                        ffd.open();
+                        ffd.deleteEntry(s1);
+                        ffd.close();
+                        ContactsDb dfs=new ContactsDb(MainActivity.getInstance());
+                        dfs.open();
+                        dfs.deleteEntry(s1);
+                        dfs.close();
                         Toast.makeText(MainActivity.getInstance(),"Sucessfully deleted||",Toast.LENGTH_SHORT).show();
                     }
                     catch (android.database.SQLException e)

@@ -1,8 +1,12 @@
 package com.example.ss;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
@@ -11,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,8 +71,9 @@ public class Frag_two extends Fragment {
         et12=v.findViewById(R.id.editTextTextPersonName14);
         et13=v.findViewById(R.id.editTextTextPersonName15);
         et14=v.findViewById(R.id.editTextTextPersonName16);
-
+        et15=v.findViewById(R.id.editTextTextPersonName19);
         tv1=v.findViewById(R.id.textView);
+        tv1.setMovementMethod(new ScrollingMovementMethod());
         tv2=v.findViewById(R.id.textView4);
         tv3=v.findViewById(R.id.textView5);
         tv4=v.findViewById(R.id.textView6);
@@ -100,6 +107,8 @@ public class Frag_two extends Fragment {
             public void onClick(View view) {
                 String s1=et9.getText().toString();
                 String s2=et12.getText().toString();
+                et9.setText("");
+                et12.setText("");
                 Registered r=new Registered(MainActivity.getInstance());
                 r.open();
                 String r_get=r.fetchData(s1);
@@ -108,6 +117,7 @@ public class Frag_two extends Fragment {
                     }
                     else{
                             Toast.makeText(MainActivity.getInstance(), "YOU ARE ALREADY REGISTERED", Toast.LENGTH_SHORT).show();
+                        tv1.setText("YOU ARE ALREADY REGISTERED");
                             return;
                         }
 
@@ -122,8 +132,10 @@ public class Frag_two extends Fragment {
                 String KEY_PHONE="person_phone";
                 String KEY_OUT="time_slots";
                 String result="";
-                if(get_cmp.equals("notfound"))
+                if(get_cmp.equals(""))
                 {
+                    Toast.makeText(MainActivity.getInstance(),"you are not a member of company",Toast.LENGTH_LONG).show();
+                    tv1.setText("you are not a member of company");
                     return;
                 }
                 //now do a new registration
@@ -141,7 +153,15 @@ public class Frag_two extends Fragment {
                 } catch (SQLException e) {
                     Toast.makeText(MainActivity.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                tv1.setText("you are registered and details are "+get_cmp+" CHECK mail");
+                String gg="";
+                for(int j=0;j<get_cmp.length();j++)
+                {
+                    if(get_cmp.charAt(j)==' '||get_cmp.charAt(j)==';')
+                        gg=gg+"\n";
+                    else
+                        gg=gg+get_cmp.charAt(j);
+                }
+                tv1.setText("YOU ARE REGISTERED CHECK MAIL DETAILS-  "+gg+" CHECK mail");
                 int ind1=0;
                 int ind2=9999999;
                 int ind3=0;
@@ -160,7 +180,7 @@ public class Frag_two extends Fragment {
                     if(cnttt==3)
                     {
                         ind3=i;
-                        Toast.makeText(MainActivity.getInstance(),"ind3 "+i,Toast.LENGTH_LONG).show();
+                       // Toast.makeText(MainActivity.getInstance(),"ind3 "+i,Toast.LENGTH_LONG).show();
                         break;
                     }
                 }
@@ -170,7 +190,7 @@ public class Frag_two extends Fragment {
                 {
                     mail=mail+get_cmp.charAt(i);
                 }
-                Toast.makeText(MainActivity.getInstance(),mail,Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.getInstance(),mail,Toast.LENGTH_LONG).show();
                 db.close();
                 JavaMailAPI javaMailAPI = new JavaMailAPI(MainActivity.getInstance(), mail, "registration", "you are registered");
                 javaMailAPI.execute();
@@ -183,6 +203,8 @@ public class Frag_two extends Fragment {
             public void onClick(View view) {
                 String s1=et9.getText().toString();
                 String s2=et12.getText().toString();
+                et9.setText("");
+                et12.setText("");
                 Registered r=new Registered(MainActivity.getInstance());
                 r.open();
                 String r_get=r.fetchData(s1);
@@ -192,6 +214,7 @@ public class Frag_two extends Fragment {
                 if(!(r_get.equals(s2)))
                 {
                     Toast.makeText(getActivity(),"Enter valid details",Toast.LENGTH_SHORT).show();
+                    tv1.setText("ENTER VALID DETAILS");
                     return;
                 }
                 //time slot confirmation
@@ -200,7 +223,26 @@ public class Frag_two extends Fragment {
                 CompanyDb db=new CompanyDb(MainActivity.getInstance());
                 db.open();
                 String result=db.fetchData(s1);
+                String gg="";
+
+                for(int j=0;j<result.length();j++)
+                {
+                    if(result.charAt(j)==' '||result.charAt(j)==';')
+                        gg=gg+"\n";
+                    else
+                        gg=gg+result.charAt(j);
+                }
+
+
+
+
                 String timing="";
+                if(result.length()==0)
+                {
+                    Toast.makeText(getActivity(),"  Not a member of company anymore",Toast.LENGTH_SHORT).show();
+                    tv1.setText("NOT A MEMBER OF COMPANY ANYMORE");
+                    return;
+                }
                 db.close();
                 int pt1=99999;
                 int pt2=0;
@@ -237,6 +279,7 @@ public class Frag_two extends Fragment {
                 String weekday=new DateFormatSymbols().getShortWeekdays()[dayofweek];
                 int indd=0;
                 int cntr=0;
+                //COMMOENT
                 while(cntr<dayofweek)
                 {
                     if(timing.charAt(indd)=='-')
@@ -271,7 +314,9 @@ public class Frag_two extends Fragment {
                     Log.d("times ","tt "+time1+" "+time2+" "+m);
                     if (m >= time1 && m < time2) {
                         result = result + " and you are looged in";
-                        tv1.setText(result);
+                        String ghh="YOU ARE LOGGED IN ";
+                        ghh=ghh+gg;
+                        tv1.setText(ghh);
                         String pass = Integer.toString(time2);
                         String f = "n" + "C" + s1 + " " + s2 +" "+ person_mail+" " + pass;
                         int rr = MainActivity.getInstance().r;
@@ -279,6 +324,18 @@ public class Frag_two extends Fragment {
                         rr++;
                         rr = rr % 10000;
                         MainActivity.getInstance().r = rr;
+                        //critical section
+                        try {
+                            Log.d("we are creating ","thread "+Thread.currentThread()+" "+" "+s1);
+                            ContactsDb ddb = new ContactsDb(MainActivity.getInstance());
+                            ddb.open();
+                            ddb.createEntry(s1, s2, person_mail,pass);
+                            ddb.close();
+                            //   Toast.makeText(MainActivity.getInstance(), "Successfully saved", Toast.LENGTH_SHORT).show();
+                        } catch (SQLException e) {
+                            Toast.makeText(MainActivity.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        //critical section
                         FlagDb ddd=new FlagDb(MainActivity.getInstance());
                         ddd.open();
                         ddd.updateEntry(s1,"k");
@@ -298,6 +355,17 @@ public class Frag_two extends Fragment {
             public void onClick(View view) {
                 String s1=et9.getText().toString();
                 String s2=et12.getText().toString();
+                et9.setText("");
+                et12.setText("");
+                ContactsDb rabi=new ContactsDb(MainActivity.getInstance());
+                rabi.open();
+                String r_get=rabi.fetchData(s1);
+                if(r_get.equals("notfound\n"))
+                {
+                    tv1.setText("YOU HAVE NOT ENTERED THE BUILDING");
+                    Toast.makeText(MainActivity.getInstance(), "YOU HAVE NOT ENTERED THE BUILDING", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Registered rr=new Registered(MainActivity.getInstance());
                 rr.open();
                 Log.d("inexit","thread "+Thread.currentThread());
@@ -307,7 +375,7 @@ public class Frag_two extends Fragment {
                 Log.d("inexi3t","thread "+Thread.currentThread());
                 String KEY_2="person_name";
                 Log.d("inexi4t","thread "+Thread.currentThread());
-                if(get_rr.equals(s2)) {
+                if(get_rr.equals(s2)&&get_rr.length()!=0) {
                     Log.d("inexi5t","thread "+Thread.currentThread());
                         String f="n"+"D"+s1+" ";
                         int ggg=MainActivity.getInstance().r;
@@ -316,14 +384,28 @@ public class Frag_two extends Fragment {
                         ggg=ggg%10000;
                         MainActivity.getInstance().r=ggg;
                         Toast.makeText(MainActivity.getInstance(), "YOU ARE EXITED", Toast.LENGTH_SHORT).show();
+                    tv1.setText("YOU ARE EXITED");
                     FlagDb ddd=new FlagDb(MainActivity.getInstance());
                     ddd.open();
                     ddd.updateEntry(s1,"k");
                     ddd.close();
+                    //critical section
+                    try{
+                        ContactsDb dbb=new ContactsDb(MainActivity.getInstance());
+                        dbb.open();
+                        dbb.deleteEntry(s1);
+                        dbb.close();
+                        //   Toast.makeText(MainActivity.getInstance(),"Sucessfully deleted||",Toast.LENGTH_SHORT).show();
                     }
-                    else
+                    catch (android.database.SQLException e)
                     {
+                        Toast.makeText(MainActivity.getInstance(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                    //critical section
+                    }
+                    else {
                         Toast.makeText(MainActivity.getInstance(), "ENTER VALID DETAILS", Toast.LENGTH_SHORT).show();
+                    tv1.setText("ENTER VALID DETAILS");
                         return;
                     }
                 rr.close();
@@ -331,41 +413,70 @@ public class Frag_two extends Fragment {
         });
         //schedule
         bt5.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
-                JobScheduler scheduler = (JobScheduler) MainActivity.getInstance().getSystemService(JOB_SCHEDULER_SERVICE);
-                ComponentName componentName = new ComponentName(MainActivity.getInstance(), ExampleJobService.class);
-                JobInfo info = new JobInfo.Builder(123, componentName)
-                        // .setRequiresCharging(true)
-                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                        .setPersisted(true)
-                        .setPeriodic(15*60 * 1000)
-                        .build();
-                // JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-                // int resultCode = scheduler.schedule(info);
-                scheduler.schedule(info);
+//                JobScheduler scheduler = (JobScheduler) MainActivity.getInstance().getSystemService(JOB_SCHEDULER_SERVICE);
+//                ComponentName componentName = new ComponentName(MainActivity.getInstance(), ExampleJobService.class);
+//                JobInfo info = new JobInfo.Builder(123, componentName)
+//                        // .setRequiresCharging(true)
+//                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+//                        .setPersisted(true)
+//                        .setPeriodic(15*60 * 1000)
+//                        .build();
+//                // JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//                // int resultCode = scheduler.schedule(info);
+//                scheduler.schedule(info);
        /* if (resultCode == JobScheduler.RESULT_SUCCESS) {
             Log.d(TAG, "Job scheduled");
         } else {
             Log.d(TAG, "Job scheduling failed");
         }*/
+                String s2=et15.getText().toString();
+                et15.setText("");
+                if(s2.equals("we"))
+                {
+                  tv1.setText("SCHEDULER STARTED");
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.getInstance(), "ENTER VALID MANAGER PASSWORD", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+                //creating a new intent specifying the broadcast receiver
+                Intent i = new Intent(getActivity(), MyAlarm.class);
+
+                //creating a pending intent using the intent
+                PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, i, 0);
+                Log.d("Myyyyyyyy", "Alarm iiiii");
+                //setting the repeating alarm that will be fired every day
+             //   am.setRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pi);
+                am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),2*60*1000,pi);
                 Log.d("mnnnn","AT LAST IN FUNC SCHDULEJOB "+Thread.currentThread());
             }
         });
         //cancel
         bt6.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                String s1=et15.getText().toString();
+                et15.setText("");
+                if(s1.equals("we"))
+                {
+                     tv1.setText("SCHEDULER STOPPED");
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.getInstance(), "ENTER VALID MANAGER PASSWORD", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 JobScheduler scheduler = (JobScheduler) getActivity().getSystemService(JOB_SCHEDULER_SERVICE);
                 scheduler.cancel(123);
                 Log.d("mnnnn", "Job cancelled");
-            }
-        });
-        //change pass
-        bt7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
         //show register
@@ -420,6 +531,59 @@ public class Frag_two extends Fragment {
             {
                 Toast.makeText(MainActivity.getInstance(),e.getMessage(),Toast.LENGTH_SHORT).show();
             }
+            }
+        });
+        //password change
+        bt7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s1 = et15.getText().toString();
+                String s2 = et12.getText().toString();
+                String s3 = et9.getText().toString();
+                et9.setText("");
+                et12.setText("");
+                et15.setText("");
+                if (s1.equals("we"))
+                {
+                    try{
+                        Registered dbb=new Registered(MainActivity.getInstance());
+                        dbb.open();
+                        dbb.deleteEntry(s3);
+                        dbb.close();
+                        //FlagDb r3=new FlagDb(MainActivity.getInstance());
+                        //r3.open();
+                        //r3.deleteEntry(s2);
+                        //r3.close();
+                       // Toast.makeText(MainActivity.getInstance(),"Sucessfully deleted||",Toast.LENGTH_SHORT).show();
+                    } catch (android.database.SQLException e)
+                    {
+                        Toast.makeText(MainActivity.getInstance(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+
+                    try {
+                        Log.d("we are creating ","thread "+Thread.currentThread());
+                        Registered r2=new Registered(MainActivity.getInstance());
+                        r2.open();
+                        r2.createEntry(s3,s2);
+                        r2.close();
+                        //FlagDb r3=new FlagDb(MainActivity.getInstance());
+                        //r3.open();
+                        //r3.createEntry(s1,"");
+                        //r3.close();
+                        //   Toast.makeText(MainActivity.getInstance(), "Successfully saved", Toast.LENGTH_SHORT).show();
+                    } catch (SQLException e) {
+                        Toast.makeText(MainActivity.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(MainActivity.getInstance(),"Sucessfully changed password",Toast.LENGTH_SHORT).show();
+                    tv1.setText("SUCCESSFULLY CHANGED PASSWORD");
+
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.getInstance(),"Incorrect manager password ",Toast.LENGTH_SHORT).show();
+                    tv1.setText("INCORRECT MANAGER PASSWORD");
+                }
+
             }
         });
         return v;
