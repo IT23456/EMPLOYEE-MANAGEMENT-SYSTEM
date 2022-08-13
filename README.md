@@ -16,7 +16,6 @@ Use the slider to reduce display size so that you can see whole layout
 2)Background permissions
 3)Battery saver mode should not be enabled
 
-IN CASE YOU ARE FACING OTHER PROBLEMS RELATED TO OPERATING SYSTEM OF YOUR DEVICE THEN WE WILL BE HAPPY TO RESOLVE THAT.(YOU CAN MAIL AT - IIT2019093@IIITA.AC.IN)
 
 THE APP COMPONENT ARE AS 
 
